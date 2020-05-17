@@ -19,8 +19,8 @@ to use as minimal styling as possible to give it some identity without
 departing too much from an [essential web look][mofo].  Sticking to good
 simple HTML and minimal styling, and avoiding unnecessary interaction
 ensures that the pages are accessible to the differently abled and to
-people lacking decent [internet access][netspds], they [respect readers'
-decisions][cascade], eat up less resources, and maintain a nice,
+people lacking decent [internet access][netspds], that they [respect
+readers' decisions][cascade], eat up less resources, and maintain a nice,
 sustainable [BMI][webobesity] level.
 
 [Hakyll]: https://jaspervdj.be/hakyll/
