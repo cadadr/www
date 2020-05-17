@@ -36,3 +36,16 @@ This is still WIP; this section will be updated soon.
 
 1) Run `cabal install` to download the dependencies.
 2) ...
+
+Relevant documentation
+======================
+
+- [Hakyll tutorials][tutidx]
+- [What's where in the Hakyll module
+  tree?][where]
+- [Github Pages & Hakyll][ghpages]
+
+[where]: https://jaspervdj.be/hakyll/tutorials/a-guide-to-the-hakyll-module-zoo.html
+[ghpages]: https://jaspervdj.be/hakyll/tutorials/github-pages-tutorial.html
+[tutidx]: https://jaspervdj.be/hakyll/tutorials.html
+
