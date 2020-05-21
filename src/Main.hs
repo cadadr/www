@@ -24,6 +24,14 @@ main = hakyll $ do
     route $ delRoute "static/"
     compile copyFileCompiler
 
+  match (pathTo "static/img/*") $ do
+    route $ delRoute "static/"
+    compile copyFileCompiler
+
+  match (pathTo "static/blog/*") $ do
+    route $ delRoute "static/"
+    compile copyFileCompiler
+
   match (pathTo "scss/*.scss") $ do
     route $ delRoute "scss/" `composeRoutes` setExtension "css"
     compile sassCompiler
