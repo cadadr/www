@@ -2,7 +2,7 @@
 
 name:                www
 
--- The package version.  See the Haskell package versioning policy (PVP) 
+-- The package version.  See the Haskell package versioning policy (PVP)
 -- for standards guiding when and how versions should be incremented.
 -- https://wiki.haskell.org/Package_versioning_policy
 -- PVP summary:      +-+------- breaking API changes
