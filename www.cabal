@@ -39,6 +39,7 @@ executable www-build
   -- (Ubuntu Bionic?) version.
   build-depends:       base >=4.9 && <4.10,
                        hakyll >=4.9.8.0 && <4.10,
+                       hakyll-sass >=0.2.4,
                        filepath >=1.4
 
   hs-source-dirs:      src

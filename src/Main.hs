@@ -8,6 +8,7 @@ import System.FilePath.Posix (combine)
 import Hakyll
 import Hakyll.Core.Identifier (Identifier, fromFilePath)
 import Hakyll.Core.Identifier.Pattern (Pattern, fromGlob)
+import Hakyll.Web.Sass (sassCompiler)
 
 
 contentDir :: FilePath
@@ -22,6 +23,10 @@ main = hakyll $ do
   match (pathTo "static/*") $ do
     route $ delRoute "static/"
     compile copyFileCompiler
+
+  match (pathTo "scss/*.scss") $ do
+    route $ delRoute "scss/" `composeRoutes` setExtension "css"
+    compile sassCompiler
 
   match (pathTo "pages/*.markdown") $ do
     route $ delRoute "pages/" `composeRoutes` setExtension "html"
