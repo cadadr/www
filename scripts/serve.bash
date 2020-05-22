@@ -38,15 +38,18 @@ cleanup () {
     if [[ ! -e "$PIDFILE" ]]; then
         return
     fi
-    sync
     PID="$(cat $PIDFILE)" && rm "$PIDFILE"
     say Kill pid="$PID"...
     [ "0" = "$PID" ] || kill -9 "$PID" \
         || die Failed to kill preexisting server on pid "$PID"
+    if [[ $# -ge 1 && "$1" = "exit" ]]; then
+        say Exiting...
+        exit 3
+    fi
 }
 
 
-trap cleanup SIGINT SIGTERM EXIT
+trap "cleanup exit" SIGINT SIGTERM EXIT
 
 if [ -e "$PIDFILE" ]; then
     if pgrep -a python3 | grep http\\.server >/dev/null; then
