@@ -1,22 +1,11 @@
 #!/usr/bin/env bash
 # serve.bash --- serve content, respawn server when _site/ is deleted
 
-# bash strict mode
-set -euo pipefail
-IFS=$'\n\t'
+. scripts/common.bash
 
 PID=0
 DIR="$PWD/_site"                # NO FOLLOWING SLASH OR BREAKS INOTIFYWAIT
 PIDFILE="$PWD/.server.pid"
-
-die () {
-    echo $0: error: $@
-    exit 2
-}
-
-say () {
-    echo $0 \[$(date)\]: $@
-}
 
 serve () {
     cleanup
@@ -30,15 +19,18 @@ serve () {
 waitdel () {
     while true; do
         say Set up watcher for "$DIR"...
-        inotifywait -e delete_self "$DIR"
-        say "$DIR" deleted, restarting server...
+        while inotifywait -qq -e delete "$DIR/.."; do
+            if [ ! -e $DIR ]; then
+                say "$DIR" deleted, restarting server...
 
-        # Wait&poll till the directory is recreated.
-        while [ ! -e "$DIR" ]; do
-            sleep 0.1
+                # Wait&poll till the directory is recreated.
+                while [ ! -e "$DIR" ]; do
+                    sleep 0.1
+                done
+
+                serve
+            fi
         done
-
-        serve
     done
 }
 
