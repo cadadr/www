@@ -32,10 +32,12 @@ sustainable [BMI][webobesity] level.
 Get started
 ===========
 
-This is still WIP; this section will be updated soon.
+1) Optionally run `cabal sandbox init` to start a sandbox.
 
-1) Run `cabal install` to download the dependencies.
-2) ...
+2) Run `cabal install` to download the dependencies.
+
+3) Run `cabal run build` to build the website, and `cabal run clean`
+  to remove build artefacts.
 
 Relevant documentation
 ======================
