@@ -58,7 +58,7 @@ main = hakyll $ do
     compile $ pandocCompiler
       >>= loadAndApplyTemplate (tmpl "blog-diyoki/post.html") diyorkiBlogCtx
       >>= saveSnapshot snap
-      >>= loadAndApplyTemplate (tmpl "page.html") diyorkiBlogCtx
+      >>= loadAndApplyTemplate (tmpl "blog-diyoki/page.html") diyorkiBlogCtx
       >>= relativizeUrls
 
   -- TODO(2020-05-22): paginate
@@ -75,7 +75,7 @@ main = hakyll $ do
             defaultContext
       makeItem ""
         >>= loadAndApplyTemplate (tmpl "blog-diyoki/listing.html") archiveCtx
-        >>= loadAndApplyTemplate (tmpl "page.html") archiveCtx
+        >>= loadAndApplyTemplate (tmpl "blog-diyoki/page.html") archiveCtx
         >>= relativizeUrls
 
   create ["diyoki/diyoki.atom.xml"] $ do
