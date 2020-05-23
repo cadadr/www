@@ -39,6 +39,9 @@ Get started
 3) Run `cabal run build` to build the website, and `cabal run clean`
   to remove build artefacts.
 
+4) Optionally, use the `scripts/serve.bash` script for running a
+   Python 3 `http.server` to serve the content on `localhost:8000`.
+
 Relevant documentation
 ======================
 
