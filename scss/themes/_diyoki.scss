@@ -1,4 +1,4 @@
-// style.scss --- main website style
+// _diyoki.scss --- theme for the diyoki blog
 
 /*
 
@@ -36,5 +36,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-@import 'themes/homepage';
-@import 'partials/basics';
+@import '../partials/palette';
+
+@mixin scheme-dark {
+    @include palette(#31200b, white, chartreuse, bisque);
+}
+
+@mixin scheme-light {
+    @include palette(white, #152535, crimson, #31200b);
+}
+
+@import '../partials/apply-schemes';

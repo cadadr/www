@@ -1,4 +1,4 @@
-// style.scss --- main website style
+// _homepage.css --- styling for the main website
 
 /*
 
@@ -36,5 +36,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-@import 'themes/homepage';
-@import 'partials/basics';
+@import '../partials/palette';
+
+@mixin scheme-dark {
+    @include palette(#234, white, aquamarine, darkgrey);
+}
+
+@mixin scheme-light {
+    @include palette(white, #152535, crimson, #494949);
+}
+
+@import '../partials/apply-schemes';
