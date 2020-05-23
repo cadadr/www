@@ -1,3 +1,5 @@
+# .gitignore
+
 .cabal-sandbox/
 dist/
 _*/
