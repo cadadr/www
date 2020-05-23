@@ -1,0 +1,19 @@
+// palette.scss --- mixin for color schemes
+
+@mixin palette($background, $text, $link, $visited) {
+    body {
+        background-color: $background;
+        color: $text;
+    }
+    a {
+        color: $link;
+    }
+    a:visited {
+        color: $visited;
+    }
+    hr {
+	border: none;
+	height: .2em;
+	background: $link;
+    }
+}

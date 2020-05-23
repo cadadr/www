@@ -1,0 +1,21 @@
+// style.scss ---
+
+/// Theme:
+
+@import 'partials/palette';
+
+@mixin scheme-dark {
+    @include palette(#234, white, aquamarine, darkgrey);
+}
+
+@mixin scheme-light {
+    @include palette(white, #152535, crimson, #494949);
+}
+
+@import 'partials/apply-schemes';
+
+
+
+/// Presentation:
+
+@import 'partials/basics';

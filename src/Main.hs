@@ -15,7 +15,7 @@ contentDir :: FilePath
 contentDir = "content"
 
 templateDir :: FilePath
-templateDir = combine contentDir "templates"
+templateDir = "templates"
 
 
 main :: IO ()
@@ -41,8 +41,8 @@ main = hakyll $ do
     compile copyFileCompiler
 
   -- SCSS
-  match (pathTo "scss/*.scss") $ do
-    route $ delRouteAndSetExtension "scss/" "css"
+  match "scss/*.scss" $ do
+    route $ (gsubRoute "scss/" (const "")) `composeRoutes` setExtension "css"
     compile sassCompiler
 
   -- Personal blog.

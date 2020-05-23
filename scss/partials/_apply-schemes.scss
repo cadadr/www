@@ -1,0 +1,11 @@
+// apply-schemes.scss --- import this after defining scheme-{dark,light} @mixins
+
+@media (prefers-color-scheme: dark) {
+    @include scheme-dark;
+}
+@media (prefers-color-scheme: light) {
+    @include scheme-light;
+}
+@media (prefers-color-scheme: no-preference) {
+    @include scheme-dark;
+}

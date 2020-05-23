@@ -1,0 +1,14 @@
+<!-- list.html --- list of blog posts -->
+
+<ul class="postlist">
+  $for(posts)$
+  <li>
+    <article>
+      <h2>$title$</h2>
+      <h3>$date$</h3>
+      <p>$description$</p>
+      <em><small><a class="read" href="$url$">Read</a></small></em>
+    </article>
+  </li>
+  $endfor$
+</ul>

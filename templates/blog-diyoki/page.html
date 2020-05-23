@@ -1,0 +1,44 @@
+<!-- page.html --- base template -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    $partial("templates/head.html")$
+      <title>$title$ --- www.gkayaalp.com/diyoki/</title>
+      <link rel="stylesheet" href="/diyoki.css" />
+  </head>
+  <body>
+    <header>
+      <nav id="crumbs">
+        /
+        <a href="/">Göktuğ’s website</a>
+        $if(section)$
+        /
+        <a href="$sectionUrl$">$section$</a>
+        $endif$
+        $if(blog)$
+        /
+        blog: <a href="/$blogUrl$">$blog$</a>
+        $endif$
+        /
+        $if(notitle)$
+        $else$
+        <a href="$url$">$title$</a>
+        $endif$
+      </nav>
+      <h1>$title$</h1>
+    </header>
+    <hr/>
+    <main role="main">
+      $body$
+    </main>
+    <hr/>
+    <footer>
+      $partial("templates/search.html")$
+      <hr/>
+      $partial("templates/copyright.html")$
+      <hr/>
+      $partial("templates/tech.html")$
+    </footer>
+  </body>
+</html>
