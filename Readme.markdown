@@ -32,6 +32,23 @@ sustainable [BMI][webobesity] level.
 Get started
 ===========
 
+Prepare:
+
+1) You’ll need a fairly recent verion of [GHC], which if your OS does
+   not provide, can be obtained via [ghcup].
+
+   - I’m running `ghc 8.8.3`.  `8.10` seems to be too new, causes
+     depenency conflicts.
+
+   - As for Cabal, the latest version as of now, `3.2.0.0`, sems to
+     have deprecated the sandbox feature.  In `3.2`, use the
+     `v1-sandbox` command.
+
+[GHC]: https://www.haskell.org/ghc/
+[ghcup]: https://downloads.haskell.org/~ghcup/
+
+Build and run:
+
 1) Optionally run `cabal sandbox init` to start a sandbox.
 
 2) Run `cabal install` to download the dependencies.
