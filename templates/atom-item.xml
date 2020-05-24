@@ -5,8 +5,6 @@
   <published>$published$</published>
   <updated>$updated$</updated>
   <summary type="html"><![CDATA[
-  $description$
-  <hr/>
   $body$
   ]]></summary>
 </entry>
