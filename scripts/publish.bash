@@ -71,6 +71,10 @@ test -d "$TARGET" || die Gitlab pages repository should have a public/ subdir
 test -z "$(git status -s 2>/dev/null)" \
     || die Repository is dirty, commit or stash changes first
 
+( cd "$OUTREPO" && [[ "$(git rev-parse --abbrev-ref HEAD 2>/dev/null)" = "master" ]] )\
+    || die Gitlab pages repository should be on master branch
+
+
 
 ### Collect info:
 echo '>>>' Collect info...
@@ -78,13 +82,13 @@ commit="$(git rev-parse HEAD 2>/dev/null)"
 
 test -n "$commit" || die Could not get HEAD commit hash
 
+
 ### Build:
 echo '>>>' Building website...
 eval "$HAKYLL build"
 
 test -d _site || die Could not locate _site directory
 
-exit
 
 ### Prepare Gitlab Pages repo:
 echo '>>>' Preparing staging repo...
@@ -93,16 +97,12 @@ test -d "$TARGET" && die Failed to remove "$TARGET"
 cp -r _site "$TARGET"
 test -d "$TARGET" || die Failed to copy over files from _site to "$TARGET"
 
-(
-    cd "$TARGET" \
-       && git add . \
-       && git commit -m "www@$commit"
-)
+( cd "$TARGET" && git add . && git commit -m "www@$commit" )
 
 ( cd "$OUTREPO" && test -z "$(git status -s 2>/dev/null)" ) \
     || die Gitlab pages repository dirty after new commit
 
 
-### P
+### Publish!:
 
 ( cd "$OUTREPO" && git push ) || die Push from staging repo to remote failed
