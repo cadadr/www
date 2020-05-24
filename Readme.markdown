@@ -47,10 +47,14 @@ Build and run:
 
 1) Run `cabal new-build` to download the dependencies and build.
 
-2) Optionally, use the `scripts/serve.bash` script for running a
-   Python 3 `http.server` to serve the content on `localhost:8000`.
+2) Optionally, use the Hakyll’s `watch` script for running a
+   Python 3 `http.server` to serve the content on `localhost:8000`:
+   ```
+   cabal new-run www-build -- watch
+   ```
+   This will also recompile on change, but that’s not good for all
+   cases, see below.
 
-   - There’s also Hakyll’s `watch` and `server` which might be better.
 
 3) Run `cabal new-run www-build -- build` to build the website, and
    `cabal new-run www-build -- clean` to remove Hakyll build
