@@ -159,5 +159,6 @@ tmpl = fromFilePath . combine templateDir
 
 postCtx :: Context String
 postCtx =
-    dateField "date" "%FT%T%z" `mappend`
+    dateField "date" "%F" `mappend`
     defaultContext
+
