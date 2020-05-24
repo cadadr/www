@@ -132,7 +132,7 @@ main = hakyll $ do
       , feedDescription = "Göktuğ's rants and ramblings."
       , feedAuthorName  = "Göktuğ Kayaalp"
       , feedAuthorEmail = "self [at] gkayaalp [dot] com"
-      , feedRoot        = "https://www.gkayaalp.com/diyokí/"
+      , feedRoot        = "https://www.gkayaalp.com/"
       }
 
 
