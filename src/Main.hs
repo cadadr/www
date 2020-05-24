@@ -118,10 +118,8 @@ main = hakyll $ do
   create ["diyoki/diyoki.atom.xml"] $ do
     route idRoute
     compile $ do
-      let feedCtx = postCtx `mappend` bodyField "description"
-      posts <- fmap (take 25) . recentFirst =<<
-        loadAllSnapshots ptn snap
-      renderAtom fc feedCtx posts
+      posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots ptn snap
+      renderAtom fc postCtx posts
 
   loadTemplatesAt Nothing
   loadTemplatesAt $ Just "blog-diyoki"
