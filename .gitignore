@@ -1,7 +1,7 @@
 # .gitignore
 
 .cabal-sandbox/
-dist/
+dist*/
 _*/
 
 *.log
