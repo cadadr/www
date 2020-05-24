@@ -70,8 +70,10 @@ Relevant documentation
   tree?][where]
 - [Github Pages & Hakyll][ghpages]
 - [Sass] docs (I use SCSS variant)
+- [Pagination]
 
 [where]: https://jaspervdj.be/hakyll/tutorials/a-guide-to-the-hakyll-module-zoo.html
 [ghpages]: https://jaspervdj.be/hakyll/tutorials/github-pages-tutorial.html
 [tutidx]: https://jaspervdj.be/hakyll/tutorials.html
 [Sass]: https://sass-lang.com/documentation
+[Pagination]: https://jaspervdj.be/hakyll/reference/Hakyll-Web-Paginate.html
