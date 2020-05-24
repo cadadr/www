@@ -65,7 +65,7 @@ test -d "$TARGET" || die Gitlab pages repository should have a public/ subdir
 ( cd "$OUTREPO" && test -z "$(git status -s 2>/dev/null)" ) \
     || die Gitlab pages repository is dirty, commit or stash changes first
 
-( cd "content" && test -z "$(git status -s 2>/dev/null)" ) \
+( cd "$PWD/content" && test -z "$(git status -s 2>/dev/null)" ) \
     || die Content repository is dirty, commit or stash changes first
 
 test -z "$(git status -s 2>/dev/null)" \
