@@ -40,24 +40,23 @@ Prepare:
    - I’m running `ghc 8.8.3`.  `8.10` seems to be too new, causes
      depenency conflicts.
 
-   - As for Cabal, the latest version as of now, `3.2.0.0`, sems to
-     have deprecated the sandbox feature.  In `3.2`, use the
-     `v1-sandbox` command.
-
 [GHC]: https://www.haskell.org/ghc/
 [ghcup]: https://downloads.haskell.org/~ghcup/
 
 Build and run:
 
-1) Optionally run `cabal sandbox init` to start a sandbox.
+1) Run `cabal new-build` to download the dependencies and build.
 
-2) Run `cabal install` to download the dependencies.
-
-3) Run `cabal run build` to build the website, and `cabal run clean`
-  to remove build artefacts.
-
-4) Optionally, use the `scripts/serve.bash` script for running a
+2) Optionally, use the `scripts/serve.bash` script for running a
    Python 3 `http.server` to serve the content on `localhost:8000`.
+
+   - There’s also Hakyll’s `watch` and `server` which might be better.
+
+3) Run `cabal new-run www-build -- build` to build the website, and
+   `cabal new-run www-build -- clean` to remove Hakyll build
+   artefacts.  This is especially necessary when SCSS partials are
+   edited because Hakyll won’t recognise them and invalidate targets
+   of SCSS files that depend on them.
 
 Relevant documentation
 ======================
