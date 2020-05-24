@@ -68,8 +68,8 @@ executable www-build
 
   -- Latest hakyll breaks dependencies, this was the Linux Mint 19.3
   -- (Ubuntu Bionic?) version.
-  build-depends:       base >=4.9 && <4.10,
-                       hakyll >=4.9.8.0 && <4.10,
+  build-depends:       base >=4.9,
+                       hakyll >=4.12.5,
                        hakyll-sass >=0.2.4,
                        filepath >=1.4
 

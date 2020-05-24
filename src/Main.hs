@@ -119,7 +119,7 @@ main = hakyll $ do
     route idRoute
     compile $ do
       posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots ptn snap
-      renderAtom fc postCtx posts
+      renderAtom' fc postCtx posts
 
   loadTemplatesAt Nothing
   loadTemplatesAt $ Just "blog-diyoki"
@@ -162,3 +162,10 @@ postCtx =
     dateField "date" "%F" `mappend`
     defaultContext
 
+
+-- Use my templates
+renderAtom' :: FeedConfiguration -> Context String -> [Item String] -> Compiler (Item String)
+renderAtom' cf cx ps = do
+  a <- unsafeCompiler $ readFile $ "templates" `combine` "atom.xml"
+  i <- unsafeCompiler $ readFile $ "templates" `combine` "atom-item.xml"
+  renderAtomWithTemplates a i cf cx ps
