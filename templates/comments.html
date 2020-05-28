@@ -1,4 +1,4 @@
-<!-- page.html --- base template -->
+<!-- comments.html --- comments notice -->
 
 <!--
 
@@ -35,47 +35,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 -->
 
-<!doctype html>
-<html lang="en">
-  <head>
-    $partial("templates/head.html")$
-    <title>$title$ --- www.gkayaalp.com</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <header>
-      <nav id="crumbs">
-        /
-        <a href="/">Göktuğ’s website</a>
-        $if(section)$
-        /
-        <a href="$sectionUrl$">$section$</a>
-        $endif$
-        $if(blog)$
-        /
-        blog: <a href="/$blogUrl$">$blog$</a>
-        $endif$
-        /
-        $if(notitle)$
-        $else$
-        <a href="$url$">$title$</a>
-        $endif$
-      </nav>
-      <h1>$title$</h1>
-    </header>
-    <hr/>
-    <main role="main">
-      $body$
-    </main>
-    <hr/>
-    <footer>
-      $partial("templates/search.html")$
-      <hr/>
-      $partial("templates/copyright.html")$
-      <hr/>
-      $partial("templates/comments.html")$
-      <hr/>
-      $partial("templates/tech.html")$
-    </footer>
-  </body>
-</html>
+
+<div id="comments-notice">
+  <p>
+    Feel free to shoot me <a href="/index.html#contact"> an e-mail</a>
+    or a <a href="https://mastodon.sdf.org/@cadadr">toot</a> with your
+    <strong>comments</strong>. They’re most welcome so long as they’re
+    well-meaning and civil. You can write in Turkish, English, or
+    Italian.
+  </p>
+</div>
