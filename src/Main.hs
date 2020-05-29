@@ -166,6 +166,6 @@ postCtx =
 -- Use my templates
 renderAtom' :: FeedConfiguration -> Context String -> [Item String] -> Compiler (Item String)
 renderAtom' cf cx ps = do
-  a <- unsafeCompiler $ readFile $ "templates" `combine` "atom.xml"
-  i <- unsafeCompiler $ readFile $ "templates" `combine` "atom-item.xml"
+  a <- loadBody $ tmpl "atom.xml"
+  i <- loadBody $ tmpl "atom-item.xml"
   renderAtomWithTemplates a i cf cx ps
