@@ -71,7 +71,8 @@ executable www-build
   build-depends:       base >=4.9,
                        hakyll >=4.13.3,
                        hakyll-sass >=0.2.4,
-                       filepath >=1.4
+                       filepath >=1.4,
+                       directory >=1.3
 
   hs-source-dirs:      src
 

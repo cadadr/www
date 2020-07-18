@@ -40,13 +40,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 module Main where
 
 
+import Control.Monad (when)
 import Data.Monoid (mappend)
+import System.Directory (doesDirectoryExist, removeDirectoryRecursive)
+import System.Environment (getArgs, lookupEnv)
 import System.FilePath.Posix (combine)
+
 import Hakyll
+import Hakyll.Core.Configuration (defaultConfiguration)
 import Hakyll.Core.Identifier (Identifier, fromFilePath)
 import Hakyll.Core.Identifier.Pattern (Pattern, fromGlob)
 import Hakyll.Web.Sass (sassCompiler)
 
+cfg = defaultConfiguration
 
 contentDir :: FilePath
 contentDir = "content"
@@ -56,76 +62,110 @@ templateDir = "templates"
 
 
 main :: IO ()
-main = hakyll $ do
-  -- Pages
-  match (pathTo "pages/*.markdown") $ do
-    route $ delRouteAndSetExtension "pages/" "html"
-    compile $ pandocCompiler
-      >>= loadAndApplyTemplate (tmpl "page.html") postCtx
-      >>= relativizeUrls
+main = do
+  (action:_) <- getArgs
+  -- This takes inpiration from
+  -- https://jip.dev/posts/drafts-in-hakyll/.
+  draftsEnv <- lookupEnv "DRAFTS"
+  let previewDir = "_preview"
+  let draftsEnabled =
+        case draftsEnv of
+          Just draftsEnv' -> draftsEnv' == "yes"
+          Nothing -> False
 
-  -- Static files
-  match (pathTo "static/*") $ do
-    route $ delRoute "static/"
-    compile copyFileCompiler
+  -- When cleaning, remove _preview even if we’re not in the drafts
+  -- mode.
+  when (action == "clean" && not draftsEnabled) $ do
+    exists <- doesDirectoryExist previewDir
+    when exists $ do
+      putStrLn $ "Removing " ++ previewDir ++ "..."
+      removeDirectoryRecursive previewDir
 
-  match (pathTo "static/img/*") $ do
-    route $ delRoute "static/"
-    compile copyFileCompiler
+  let cfg' = if draftsEnabled
+             then cfg { destinationDirectory = previewDir }
+             else cfg
 
-  match (pathTo "static/blog/*") $ do
-    route $ delRoute "static/"
-    compile copyFileCompiler
-
-  -- SCSS
-  match "scss/*.scss" $ do
-    route $ (gsubRoute "scss/" (const "")) `composeRoutes` setExtension "css"
-    compile sassCompiler
-
-  -- Personal blog.
-  let diyorkiBlogName = "Göktuğ diyor ki ..."
-  let diyorkiBlogUrl = "diyoki/index.html"
-
-  match ptn $ do
-    let diyorkiBlogCtx =
-          constField "blog" diyorkiBlogName `mappend`
-          constField "blogUrl" diyorkiBlogUrl `mappend`
-          postCtx
-    route $ delRouteAndSetExtension "blog-" "html"
-    compile $ pandocCompiler
-      >>= loadAndApplyTemplate (tmpl "blog-diyoki/post.html") diyorkiBlogCtx
-      >>= saveSnapshot snap
-      >>= loadAndApplyTemplate (tmpl "blog-diyoki/page.html") diyorkiBlogCtx
-      >>= relativizeUrls
-
-  -- TODO(2020-05-22): paginate
-  create [fromFilePath diyorkiBlogUrl] $ do
-    route $ idRoute
-    compile $ do
-      posts <- recentFirst =<< loadAllSnapshots ptn snap
-      let archiveCtx =
-            listField "posts" postCtx (return posts) `mappend`
-            constField "blog" diyorkiBlogName `mappend`
-            constField "title" diyorkiBlogName `mappend`
-            constField "notitle" "yes" `mappend`
-            constField "blogUrl" diyorkiBlogUrl `mappend`
-            defaultContext
-      makeItem ""
-        >>= loadAndApplyTemplate (tmpl "blog-diyoki/listing.html") archiveCtx
-        >>= loadAndApplyTemplate (tmpl "blog-diyoki/page.html") archiveCtx
+  hakyllWith cfg' $ do
+    -- Pages
+    match (if draftsEnabled
+           then pathTo "pages/*.markdown" .||. pathTo "pages/drafts/*.markdown"
+           else pathTo "pages/*.markdown") $ do
+      route $ delRouteAndSetExtension "pages/(drafts/)?" "html"
+      compile $ pandocCompiler
+        >>= loadAndApplyTemplate (tmpl "page.html") postCtx
         >>= relativizeUrls
 
-  create ["diyoki/diyoki.atom.xml"] $ do
-    route idRoute
-    compile $ do
-      posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots ptn snap
-      renderAtom' fc postCtx posts
+    -- Static files
+    match (pathTo "static/*") $ do
+      route $ delRoute "static/"
+      compile copyFileCompiler
 
-  loadTemplatesAt Nothing
-  loadTemplatesAt $ Just "blog-diyoki"
+    match (pathTo "static/img/*") $ do
+      route $ delRoute "static/"
+      compile copyFileCompiler
+
+    match (pathTo "static/blog/*") $ do
+      route $ delRoute "static/"
+      compile copyFileCompiler
+
+    -- SCSS
+    match "scss/*.scss" $ do
+      route $ (gsubRoute "scss/" (const "")) `composeRoutes` setExtension "css"
+      compile sassCompiler
+
+    -- Personal blog.
+    let diyorkiBlogName = "Göktuğ diyor ki ..."
+    let diyorkiBlogUrl = "diyoki/index.html"
+
+    let diyokiPattern
+          = if draftsEnabled
+            then (pathTo "blog-diyoki/*.markdown"
+                  .||. pathTo "blog-diyoki/drafts/*.markdown")
+            else pathTo "blog-diyoki/*.markdown"
+    let diyokiSnap = "content-blog-diyoki"
+
+    match diyokiPattern $ do
+      let diyorkiBlogCtx =
+            constField "blog" diyorkiBlogName `mappend`
+            constField "blogUrl" diyorkiBlogUrl `mappend`
+            postCtx
+      -- XXX(2020-07-18): no need to remove drafts/ here because the
+      -- blog front page links to the urls with draft/ in them
+      -- anyways.
+      route $ delRouteAndSetExtension "blog-" "html"
+      compile $ pandocCompiler
+        >>= loadAndApplyTemplate (tmpl "blog-diyoki/post.html") diyorkiBlogCtx
+        >>= saveSnapshot diyokiSnap
+        >>= loadAndApplyTemplate (tmpl "blog-diyoki/page.html") diyorkiBlogCtx
+        >>= relativizeUrls
+
+    -- TODO(2020-05-22): paginate
+    create [fromFilePath diyorkiBlogUrl] $ do
+      route $ idRoute
+      compile $ do
+        posts <- recentFirst =<< loadAllSnapshots diyokiPattern diyokiSnap
+        let archiveCtx =
+              listField "posts" postCtx (return posts) `mappend`
+              constField "blog" diyorkiBlogName `mappend`
+              constField "title" diyorkiBlogName `mappend`
+              constField "notitle" "yes" `mappend`
+              constField "blogUrl" diyorkiBlogUrl `mappend`
+              defaultContext
+        makeItem ""
+          >>= loadAndApplyTemplate (tmpl "blog-diyoki/listing.html") archiveCtx
+          >>= loadAndApplyTemplate (tmpl "blog-diyoki/page.html") archiveCtx
+          >>= relativizeUrls
+
+    create ["diyoki/diyoki.atom.xml"] $ do
+      route idRoute
+      compile $ do
+        posts <- fmap (take 10) . recentFirst =<<
+          loadAllSnapshots diyokiPattern diyokiSnap
+        renderAtom' fc postCtx posts
+
+    loadTemplatesAt Nothing
+    loadTemplatesAt $ Just "blog-diyoki"
   where
-    ptn  = pathTo "blog-diyoki/*.markdown"
-    snap = "content-blog-diyoki"
     fc :: FeedConfiguration
     fc = FeedConfiguration
       { feedTitle       = "Göktuğ diyor ki ..."

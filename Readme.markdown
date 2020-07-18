@@ -36,38 +36,41 @@ Prepare:
 
 1) You’ll need a fairly recent verion of [GHC], which if your OS does
    not provide, can be obtained via [ghcup].
-
-   - I’m running `ghc 8.8.3`.  `8.10` seems to be too new, causes
-     depenency conflicts.
+   - GHC 8.8.3 and 8.6.5 work okay.
+   - Cabal 3.2.0.0 and 2.4.0.0 work okay.
+     - This setup uses the new project style.
 
 [GHC]: https://www.haskell.org/ghc/
 [ghcup]: https://downloads.haskell.org/~ghcup/
 
 Build and run:
 
-1) Run `cabal new-build` to download the dependencies and build.
+1) Optionally run `cabal new-build` to download the dependencies and build.
+   - This is not necessary as `make` recipes will build the executable
+     when necessary.
 
-2) Optionally, use the Hakyll’s `watch` script for running a
-   Python 3 `http.server` to serve the content on `localhost:8000`:
+2) Optionally, use the Hakyll’s `watch` command to build when files change and
+   serve the website on `127.0.0.1:8000`:
    ```
-   cabal new-run www-build -- watch
+   make watch
    ```
-   This will also recompile on change, but that’s not good for all
-   cases, see below.
+   This will also recompile on change, but sometimes you do need to just rerun.
+   In that case, kill the above process, run `make clean`, and run `make watch`
+   again.
+   - Run as `DRAFTS=yes make watch` in order to build with draft pages
+     and blog posts.
 
 
-3) Run `cabal new-run www-build -- build` to build the website, and
-   `cabal new-run www-build -- clean` to remove Hakyll build
-   artefacts.  This is especially necessary when SCSS partials are
-   edited because Hakyll won’t recognise them and invalidate targets
-   of SCSS files that depend on them.
+3) Run `make clean` to remove files.
+
+4) For a deep clean, run `git clean -dfx`. Beware, this’ll remove any
+   untracked files.
 
 Relevant documentation
 ======================
 
 - [Hakyll tutorials][tutidx]
-- [What's where in the Hakyll module
-  tree?][where]
+- [What's where in the Hakyll module tree?][where]
 - [Github Pages & Hakyll][ghpages]
 - [Sass] docs (I use SCSS variant)
 - [Pagination]
