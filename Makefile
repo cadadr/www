@@ -18,3 +18,5 @@ clean:
 
 deep-clean:
 	git clean -dfx
+
+.PHONY: build watch publish clean deep-clean
