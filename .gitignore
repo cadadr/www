@@ -3,6 +3,7 @@
 .cabal-sandbox/
 dist*/
 _*/
+.ghc.environment*
 
 *.log
 *.pid
