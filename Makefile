@@ -10,6 +10,9 @@ build: clean
 watch: clean
 	$(EXE) watch
 
+publish: clean
+	DRAFTS=no $(MAKE) $(MAKEFLAGS) build && bash scripts/publish.bash
+
 clean:
 	$(EXE) clean
 
